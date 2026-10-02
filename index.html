@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PERDEU ACHOU</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <span>🔎</span>
+            <div>
+                <h1>PERDEU <strong>ACHOU</strong></h1>
+                <p>Seu mural de achados e perdidos</p>
+            </div>
+        </div>
+
+        <button class="btn-novo" onclick="abrirModal()">
+            + Cadastrar item
+        </button>
+    </header>
+
+    <main>
+
+        <section class="hero">
+            <div>
+                <span class="tag">📍 COMUNIDADE</span>
+
+                <h2>
+                    Perdeu alguma coisa?
+                    <br>
+                    <span>Achou alguma coisa?</span>
+                </h2>
+
+                <p>
+                    Ajude alguém a encontrar o que perdeu ou
+                    recupere aquele objeto que você está procurando.
+                </p>
+
+                <button class="btn-principal" onclick="abrirModal()">
+                    🚀 Publicar anúncio
+                </button>
+            </div>
+
+            <div class="hero-emoji">
+                🧳
+                🔑
+                📱
+                🎒
+            </div>
+        </section>
+
+
+        <section class="ferramentas">
+
+            <div class="busca">
+                <span>🔍</span>
+                <input
+                    type="text"
+                    id="campoBusca"
+                    placeholder="Buscar por nome, descrição ou local..."
+                    oninput="renderizarItens()"
+                >
+            </div>
+
+            <div class="filtros">
+                <button
+                    class="filtro ativo"
+                    data-filtro="todos"
+                    onclick="filtrar('todos', this)">
+                    Todos
+                </button>
+
+                <button
+                    class="filtro perdido"
+                    data-filtro="perdido"
+                    onclick="filtrar('perdido', this)">
+                    🔴 Perdidos
+                </button>
+
+                <button
+                    class="filtro encontrado"
+                    data-filtro="encontrado"
+                    onclick="filtrar('encontrado', this)">
+                    🟢 Encontrados
+                </button>
+
+                <button
+                    class="filtro resolvido"
+                    data-filtro="resolvido"
+                    onclick="filtrar('resolvido', this)">
+                    ✅ Resolvidos
+                </button>
+            </div>
+
+        </section>
+
+
+        <section class="titulo-lista">
+            <div>
+                <span class="mini-titulo">MURAL</span>
+                <h2>Achados & Perdidos</h2>
+            </div>
+
+            <span id="contador" class="contador">
+                0 itens
+            </span>
+        </section>
+
+
+        <section id="listaItens" class="grid-itens">
+            <!-- Os cards serão inseridos pelo JavaScript -->
+        </section>
+
+    </main>
+
+
+    <!-- MODAL DE CADASTRO -->
+
+    <div id="modal" class="modal">
+
+        <div class="modal-conteudo">
+
+            <button class="fechar" onclick="fecharModal()">×</button>
+
+            <div class="modal-titulo">
+                <span>✨</span>
+
+                <div>
+                    <h2>Novo anúncio</h2>
+                    <p>Ajude alguém a encontrar seu objeto.</p>
+                </div>
+            </div>
+
+
+            <form id="formItem">
+
+                <div class="tipo-item">
+
+                    <label class="tipo-card perdido-card">
+                        <input
+                            type="radio"
+                            name="tipo"
+                            value="perdido"
+                            checked
+                        >
+
+                        <span>🔴</span>
+
+                        <strong>Perdi</strong>
+
+                        <small>Estou procurando</small>
+                    </label>
+
+
+                    <label class="tipo-card encontrado-card">
+                        <input
+                            type="radio"
+                            name="tipo"
+                            value="encontrado"
+                        >
+
+                        <span>🟢</span>
+
+                        <strong>Encontrei</strong>
+
+                        <small>Quero devolver</small>
+                    </label>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="nome">
+                        Nome do item
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        placeholder="Ex: Celular Samsung"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="descricao">
+                        Descrição
+                    </label>
+
+                    <textarea
+                        id="descricao"
+                        placeholder="Descreva o item, cor, marca, detalhes..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="linha">
+
+                    <div class="campo">
+
+                        <label for="local">
+                            📍 Local
+                        </label>
+
+                        <input
+                            type="text"
+                            id="local"
+                            placeholder="Ex: Biblioteca"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="contato">
+                            📞 Contato
+                        </label>
+
+                        <input
+                            type="text"
+                            id="contato"
+                            placeholder="WhatsApp ou e-mail"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="imagem">
+                        🖼️ URL da imagem <small>(opcional)</small>
+                    </label>
+
+                    <input
+                        type="url"
+                        id="imagem"
+                        placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-publicar">
+                    🚀 Publicar anúncio
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div id="notificacao" class="notificacao">
+        <span>✓</span>
+        <p>Item cadastrado com sucesso!</p>
+    </div>
+
+
+    <footer>
+
+        <div>
+            <strong>🔎 PERDEU ACHOU</strong>
+            <p>Conectando pessoas e devolvendo histórias.</p>
+        </div>
+
+        <span>© 2026 PERDEU ACHOU</span>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
